@@ -18,7 +18,7 @@ server.use(cors())
 
 server.use('/api', authRouter);
 
-server.use ('/api/users', restricted, checkRole('HR'), usersRouter)
+server.use ('/api/users', restricted, checkRole('nodepo'), usersRouter)
 
 
 server.get('/', (req, res) => {
@@ -40,7 +40,7 @@ module.exports = server;
 function checkRole(department) {
   return (req, res, next) => {
     if( req.decodedToken && 
-      req.decodedToken.department && req.decodedToken.department.toLowerCase() === department.toLowerCase()) {
+      req.decodedToken.department.toLowerCase() === department.toLowerCase()) {
         console.log(req.decodedToken.department)
 
         next();
