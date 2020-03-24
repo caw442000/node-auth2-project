@@ -18,10 +18,36 @@ server.use(cors())
 
 server.use('/api', authRouter);
 
-//server.use ('/api/users', restricted, checkRole(''), usersRouter)
+server.use ('/api/users', restricted, checkRole('HR'), usersRouter)
 
 
 server.get('/', (req, res) => {
   res.status(200).json({ message: 'api up'})
 })
 module.exports = server;
+
+// function checkDepartment(department) {
+//   return (req, res, next) => {
+//     if(req.decodedToken) {
+//         next();
+//     } else {
+//       res.status(403).json({ errorMessage: 'Not apart of the correct department'});
+
+//     }
+//   }
+// }
+
+function checkRole(department) {
+  return (req, res, next) => {
+    if( req.decodedToken && 
+      req.decodedToken.department && req.decodedToken.department.toLowerCase() === department.toLowerCase()) {
+        console.log(req.decodedToken.department)
+
+        next();
+    } else {
+      console.log(req.decodedToken.department.toLowerCase())
+
+      res.status(403).json({ you: 'You shall not pass!'});
+    }
+  };
+}
